@@ -50,6 +50,36 @@ The project is built as a **fully self-contained browser game** using **HTML5, C
 
 ---
 
+---
+
+# 🤖 AI-Assisted Development
+
+Merge6x6 was developed with the assistance of **Google AI Studio** as an AI-powered coding partner.
+
+Rather than simply generating code, this project was built through an iterative development process where I:
+
+* 🎮 Designed the game concept and gameplay mechanics
+* 🎨 Planned the UI/UX and visual style
+* 💡 Brainstormed and selected new features
+* 🛠️ Guided AI with detailed prompts and specifications
+* 🐞 Tested, debugged, and refined the generated code
+* ⚡ Optimized performance and gameplay experience
+* 📱 Ensured compatibility across desktop and Android devices
+* 🚀 Continuously improved the project through multiple development iterations
+
+Google AI Studio accelerated the implementation process, while the overall vision, feature planning, testing, decision-making, and final refinements were carried out by me.
+
+This project showcases how modern AI-assisted development can be combined with creativity, software engineering, and problem-solving to build polished, production-quality applications.
+
+---
+
+## 🙏 Acknowledgements
+
+Special thanks to **Google AI Studio** for providing powerful AI-assisted development capabilities that helped bring this project to life.
+
+AI was used as a development tool, while the project's design, architecture, feature planning, testing, and final decisions were directed by me.
+
+
 # 🎮 Gameplay
 
 * Place numbered blocks onto a **6×6 board**
