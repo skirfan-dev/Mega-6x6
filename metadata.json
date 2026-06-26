@@ -1,0 +1,6 @@
+{
+  "name": "Merge6x6",
+  "description": "A 2D block-merging number puzzle game featuring beautiful smooth animations, particle effects, seedable daily challenges, high score tracking, statistics, achievements, and programmatic sound synthesis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

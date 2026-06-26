@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Merge6x6: Block Puzzle</title>
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-wrapper">
+        <!-- Canvas for Particles and Confetti -->
+        <canvas id="effects-canvas"></canvas>
+
+        <!-- Top Panel: Brand and Scores -->
+        <header class="top-panel">
+            <div class="brand">
+                <span class="logo-icon">✨</span>
+                <h1>Merge6x6</h1>
+            </div>
+            
+            <div class="stats-row">
+                <div class="score-box">
+                    <span class="label">SCORE</span>
+                    <span id="current-score" class="value">0</span>
+                    <span id="score-popup" class="popup-text"></span>
+                </div>
+                <div class="score-box best">
+                    <span class="label">BEST</span>
+                    <span id="best-score" class="value">0</span>
+                </div>
+                <div class="score-box level">
+                    <span class="label">LEVEL</span>
+                    <span id="current-level" class="value">1</span>
+                    <div class="xp-bar-container">
+                        <div id="xp-bar-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Queue Panel (Active & Next Blocks) -->
+        <div class="queue-container">
+            <span class="queue-title">NEXT BLOCKS</span>
+            <div class="queue-slots">
+                <div class="queue-slot current" id="slot-current" draggable="true" title="Drag me or tap a grid cell!">
+                    <div class="queue-label">CURRENT</div>
+                    <div id="block-current" class="block-preview"></div>
+                </div>
+                <div class="queue-slot" id="slot-next-1">
+                    <div id="block-next-1" class="block-preview"></div>
+                </div>
+                <div class="queue-slot" id="slot-next-2">
+                    <div id="block-next-2" class="block-preview"></div>
+                </div>
+                <div class="queue-slot" id="slot-next-3">
+                    <div id="block-next-3" class="block-preview"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mode Indicator / Banner -->
+        <div class="mode-banner" id="mode-banner">
+            <span id="mode-text">Endless Mode</span>
+        </div>
+
+        <!-- Combo Overlay text -->
+        <div id="combo-display" class="combo-text"></div>
+
+        <!-- Game Board Container -->
+        <div class="board-wrapper">
+            <div id="board" class="board-grid">
+                <!-- Static 6x6 grid cells generated dynamically in JS -->
+            </div>
+        </div>
+
+        <!-- Bottom Panel Panel: Primary Controls -->
+        <footer class="bottom-panel">
+            <button id="btn-undo" class="control-btn" title="Undo Last Move">
+                <span class="btn-icon">↺</span>
+                <span class="btn-label">Undo</span>
+            </button>
+            <button id="btn-pause" class="control-btn" title="Pause Game">
+                <span class="btn-icon">||</span>
+                <span class="btn-label">Pause</span>
+            </button>
+            <button id="btn-restart" class="control-btn" title="Restart Game">
+                <span class="btn-icon">↻</span>
+                <span class="btn-label">Restart</span>
+            </button>
+            <button id="btn-sound" class="control-btn" title="Toggle Sound">
+                <span class="btn-icon" id="sound-icon">🔊</span>
+                <span class="btn-label">Sound</span>
+            </button>
+        </footer>
+
+        <!-- Auxiliary Action Tabs -->
+        <div class="nav-tabs">
+            <button id="tab-endless" class="tab-btn active">Endless</button>
+            <button id="tab-daily" class="tab-btn">Daily Challenge</button>
+            <button id="tab-stats" class="tab-btn">Stats</button>
+            <button id="tab-achievements" class="tab-btn">Achievements</button>
+            <button id="tab-settings" class="tab-btn">Settings</button>
+        </div>
+    </div>
+
+    <!-- Modals Section -->
+    
+    <!-- Settings Modal -->
+    <div id="modal-settings" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-group">
+                    <label>Grid Theme</label>
+                    <div class="theme-options">
+                        <button class="theme-opt active" data-theme="classic">Classic Dark</button>
+                        <button class="theme-opt" data-theme="neon">Neon Violet</button>
+                        <button class="theme-opt" data-theme="cyber">Cyberpunk Blue</button>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <label>Particle Intensity</label>
+                    <div class="particle-options">
+                        <button class="part-opt active" data-intensity="high">High</button>
+                        <button class="part-opt" data-intensity="low">Low</button>
+                        <button class="part-opt" data-intensity="off">Off</button>
+                    </div>
+                </div>
+                <div class="settings-group warning">
+                    <label>Danger Zone</label>
+                    <button id="btn-reset-data" class="danger-btn">Reset All Game Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Modal -->
+    <div id="modal-stats" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Statistics</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-val" id="stat-games-played">0</span>
+                        <span class="stat-lbl">Games Played</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-val" id="stat-total-merges">0</span>
+                        <span class="stat-lbl">Total Merges</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-val" id="stat-highest-block">2</span>
+                        <span class="stat-lbl">Highest Block</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-val" id="stat-max-combo">1x</span>
+                        <span class="stat-lbl">Max Combo</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-val" id="stat-daily-high">0</span>
+                        <span class="stat-lbl">Daily Best</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievements Modal -->
+    <div id="modal-achievements" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Achievements</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="achievements-list" id="achievements-container">
+                    <!-- Loaded dynamically in script.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Screen Overlay -->
+    <div id="overlay-pause" class="overlay">
+        <div class="overlay-content">
+            <h2>Game Paused</h2>
+            <p>Your progress is safe.</p>
+            <button id="btn-resume" class="primary-btn">Resume Game</button>
+        </div>
+    </div>
+
+    <!-- Game Over Overlay -->
+    <div id="overlay-gameover" class="overlay">
+        <div class="overlay-content">
+            <span class="gameover-icon">💀</span>
+            <h2>Game Over</h2>
+            <div class="gameover-stats">
+                <p>Final Score: <strong id="go-score">0</strong></p>
+                <p>Highest Block: <strong id="go-block">2</strong></p>
+            </div>
+            <button id="btn-go-restart" class="primary-btn">Play Again</button>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Drag-and-Drop Visual Ghost -->
+    <div id="drag-ghost" class="drag-ghost"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
